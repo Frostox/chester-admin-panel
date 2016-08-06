@@ -1,0 +1,56 @@
+doctype html
+html(ng-app='firebaseApp')
+  head
+    title PGNs | Admin Panel
+    meta(name='viewport', content="width=device-width, initial-scale=1.0")
+    link(rel='stylesheet', href='../styles/style.css')
+    link(rel='stylesheet', href='../bower_components/angular-material/angular-material.css')
+
+    body
+
+      md-content(layout='column')
+        md-toolbar(layout='row', ng-controller='HomeCtrl')
+          .md-toolbar-tools.top-navbar
+                h2
+                  span Chess App Admin Panel
+                span(flex='')
+                md-button.md-raised(aria-label='Log out', ng-click='logOut()') Log out
+
+
+
+
+        div(ng-cloak='')
+          md-content
+            md-tabs(md-dynamic-height='', md-border-bottom='')
+              md-tab(label='Chapters')
+                md-content.md-padding(ng-controller='ChaptersCtrl')
+                  include chapters
+
+              md-tab(label='Users')
+                md-content.md-padding(ng-controller='UsersCtrl')
+                  include users
+              md-tab(label='Settings')
+                md-content.md-padding
+                  p not implemented yet
+
+      script(src='../bower_components/jquery/dist/jquery.js')
+      script(src='../bower_components/angular/angular.js')
+      script(src='../bower_components/angular-aria/angular-aria.js')
+      script(src='../bower_components/angular-animate/angular-animate.js')
+      script(src='../bower_components/angular-cookies/angular-cookies.js')
+      script(src='../bower_components/angular-messages/angular-messages.js')
+      script(src='../bower_components/angular-resource/angular-resource.js')
+      script(src='../bower_components/angular-route/angular-route.js')
+      script(src='../bower_components/angular-sanitize/angular-sanitize.js')
+      script(src='../bower_components/angular-touch/angular-touch.js')
+      script(src='../bower_components/firebase/firebase.js')
+      script(src='../bower_components/angularfire/dist/angularfire.js')
+      script(src='../bower_components/angular-material/angular-material.js')
+
+
+
+
+      script(src='../scripts/app.js')
+      script(src='../scripts/controllers/home.js')
+      script(src='../scripts/controllers/chapters.js')
+      script(src='../scripts/controllers/users.js')

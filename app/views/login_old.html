@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+	<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
+
+	<title>Master Login</title>
+</head>
+<body ng-app="chessapp" >
+<form ng-controller="master_login">
+  Username:<br>
+  <input type="text"  ng-model="username">
+  <br>
+  Password:<br>
+  <input type="text"  ng-model="password"><br>
+  <button ng-click="login()">Login</button>
+</form>
+<script type="text/javascript">
+	var app = angular.module('chessapp', ["firebase"]);
+	app.controller('master_login', function($scope,$window){				
+	$scope.login=function(){
+	//Inbuilt firebase authentication
+	var ref = new Firebase("https://blistering-heat-8553.firebaseio.com");	
+	ref.authWithPassword({
+	  email    : $scope.username,
+	  password : $scope.password
+	}, function(error, authData) {
+	  if (error) {
+	    console.log("Login Failed!", error);
+	    location.reload();
+	  } else {
+	    console.log("Authenticated successfully with payload:", authData);
+	    $window.location.href = 'chapter.html';
+	  }
+	});	
+};
+});
+</script>
+</body>
+</html>

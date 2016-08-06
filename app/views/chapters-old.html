@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/1.1.4/angularfire.min.js"></script>
+
+	<title>Master Login</title>
+</head>
+<body ng-app="chessapp_chapter" ng-controller="chapters">
+ <button ng-click="get_chapters()">Chapters</button>
+ <table>
+  <tr ng-repeat="x in chapters">
+    <td ng-click="get_pgn($event)">{{ x.chapter }}</td>
+    <td ng-click="edit_chapter(x.chapter)">Edit</td>
+    <td ng-click="delete_chapter(x.chapter)">Delete</td>
+  </tr>
+ </table>
+<h5>Chapter Information</h5>
+<input type="text" ng-model="chapter"></input>
+<button ng-click="add()">Add</button>
+<button ng-click="edit()">Save</button>
+<input type="file" on-read-file="showContent($fileContent)" />
+ <table>
+  <tr ng-repeat="y in pgns track by $index">
+    <td ng-click="edit_pgn($index)" >{{ y.pgn_chp }}</td>
+     <td ng-click="edit_chapter(x.chapter)">Edit</td>
+    <td ng-click="delete_pgn($index)">Delete</td>
+  </tr>
+ </table>
+ <!-- <p ng-click="edit_pgn()" id="demo"></p>  -->
+    <div ng-if="content">
+        <h2>File content is:</h2>
+        <pre>{{ content }}</pre>
+    </div>
+ <script type="text/javascript">
+	var app = angular.module('chessapp_chapter', []);
+	app.controller('chapters', function($scope){
+
+	var counter=-1;
+	var obj={};
+	var obj_pgn=[];
+	obj['state'] = new Array();
+	// obj_pgn['pgn_chp'] = new Array();
+
+	$scope.showContent = function($fileContent){
+
+        $scope.content = $fileContent;
+				
+				obj = {};
+				obj['state'] = new Array();
+				var counter=-1;
+
+        var string_file=$fileContent;
+        var search_string_index=string_file.search('FEN');
+        var string_req=string_file.substr(search_string_index,string_file.length);
+
+        var state_string_start=string_req.search('"');
+        var state_string_end=string_req.search(']');
+        var state_string=string_req.substr(state_string_start,state_string_end-2);
+
+        var move_string_start=string_req.search('PlyCount');
+        var move_string=string_req.substr(move_string_start,state_string_end-2);
+
+        /*State object*/
+        for (var i = 0; i < state_string.length; i++) {
+        	var char_state_string=state_string.charAt(i);
+
+        	var letterNumber = /^[a-zA-Z]+$/;
+        	if(char_state_string == ' '){
+        		break;
+        	}
+        	else{
+ 			if(char_state_string.match(letterNumber))
+        	{
+        		counter++;
+        		var item = {};
+        		item[char_state_string] = counter;
+        		obj['state'].push(item);
+        	}
+        	else{
+        		counter++;
+        	}
+        	}
+        };
+
+        /*Plycount object*/
+        for (var i = 0; i < move_string.length; i++) {
+        	var char_state_string=move_string.charAt(i);
+
+        	var letterNumber = /^[0-9]+$/;
+        	if(char_state_string.match(letterNumber))
+        	{
+        	  obj['PlyCount']=char_state_string;
+        	}
+        };
+        console.log(obj);//object state and plycount
+    	};
+
+    $scope.delete_pgn=function(pgn_id){
+    	console.log(pgn_id);
+    	console.log($scope.pgns);
+    	var fredRef = new Firebase('https://blistering-heat-8553.firebaseio.com/pgns/'+pgn_id);
+		fredRef.remove();
+    };
+
+	$scope.get_chapters=function(){
+		var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/chapters");
+		ref.on("value", function(chapter_data) {
+		  $scope.chapters=chapter_data.val();
+		  console.log($scope.chapters);
+		}, function (errorObject) {
+		  console.log("The read failed: " + errorObject.code);
+		});
+	};
+
+	$scope.get_pgn=function($event){
+		var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/pgns");
+		ref.orderByChild("pgn_chp").equalTo($event.srcElement.innerText).on("child_added", function(snapshot) {
+			var j=snapshot.val()
+			obj_pgn.push(j);
+			console.log(obj_pgn);
+			$scope.pgns=obj_pgn;
+		});
+		 // console.log(obj_pgn);
+
+		// console.log(obj_pgn);
+		/*var scoresRef = new Firebase("https://blistering-heat-8553.firebaseio.com/pgns");
+		scoresRef.orderByValue().on("value", function(snapshot) {
+		  snapshot.forEach(function(data) {
+		    console.log("The " + data.key() + " dinosaur's score is " + data.val().pgn_chp);
+		  });
+		});
+		/*var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/pgns");
+		ref.orderByChild("pgn_chp").on("child_added", function(snapshot) {
+			// console.log(snapshot);
+		  console.log(snapshot.key() + " was " + snapshot.val().pgn_chp );
+		});*/
+		/*var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/pgns");
+		ref.on("value", function(pgn_data) {
+		  $scope.pgn=pgn_data.val();
+		  console.log($scope.pgn);
+		}, function (errorObject) {
+		  console.log("The read failed: " + errorObject.code);
+		});*/
+		/*var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/pgns");
+		ref.push(obj);*/
+	};
+
+	$scope.edit_chapter=function(chapter_name){
+		var index=getChapter(chapter_name);
+		var product=$scope.chapters[index];
+		$scope.chapter=product.chapter;
+	};
+
+	$scope.delete_chapter=function(chapter_name){
+		var result=confirm('Are you sure?');
+		if(result == true){
+		var index=getChapter(chapter_name);
+		console.log(index);
+		var fredRef = new Firebase('https://blistering-heat-8553.firebaseio.com/chapters/'+index);
+		fredRef.remove();
+		 }
+	};
+
+	$scope.add=function(){
+		var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/chapters");
+		ref.push({
+			chapter:$scope.chapter
+		});
+		$scope.chapter='';
+	};
+
+	$scope.edit=function(){
+		console.log($scope.chapter);
+		var index=getChapter($scope.chapter);
+		var ref = new Firebase("https://blistering-heat-8553.firebaseio.com/chapters/"+index);
+		ref.update({
+			chapter:$scope.chapter
+		});
+	};
+
+	function getChapter(chapter_name){
+		for (var i = 0; i < Object.keys($scope.chapters).length; i++) {
+			if($scope.chapters[Object.keys($scope.chapters)[i]].chapter == chapter_name ){
+				console.log(Object.keys($scope.chapters)[i]);
+				return Object.keys($scope.chapters)[i];
+			}
+		}
+	}
+	});
+
+	app.directive('onReadFile', function ($parse) {
+	return {
+		restrict: 'A',
+		scope: false,
+		link: function(scope, element, attrs) {
+            var fn = $parse(attrs.onReadFile);
+
+			element.on('change', function(onChangeEvent) {
+				var reader = new FileReader();
+
+				reader.onload = function(onLoadEvent) {
+					scope.$apply(function() {
+						fn(scope, {$fileContent:onLoadEvent.target.result});
+					});
+				};
+
+				reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
+			});
+		}
+	};
+	});
+ </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+md-content(layout-xs='column', layout-gt-xs='row')
+  div.md-inline-form
+    md-card#card(layout-padding)
+      md-sub-header.md-no-sticky create or edit an user
+      div(layout-gt-xs='column')
+        md-input-container(flex, style='width:100%;')
+          label enter the email
+          input(ng-model='user.email')
+        md-input-container(flex, style='width:100%;')
+          label choose a password
+          input(ng-model='user.password')
+        div(layout='row', layout-align='center center')
+          md-input-container
+            md-button.md-raised.md-primary(ng-click='add()') Add
+          md-input-container
+            md-button.md-raised(ng-click='clear()') Clear
+
+  md-card(layout-padding, flex)
+    md-list(flex)
+      md-sub-header.md-no-sticky Users
+      md-list-item.md-2-line(ng-repeat='user in users')
+        md-divider
+        div.md-list-item-text(flex = '3')
+          h4 {{user.email}}
+        div.md-secondary(layout='row', flex = '1')
+          md-button.md-icon-button(ng-click='block(user.$id, !user.blocked)')
+            md-icon(md-svg-icon='../images/shapes.svg', aria-label='Edit', ng-class='user.blocked ? blocked : unblocked')

@@ -1,0 +1,17 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-width: 300px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.blocked {
+  opacity: 1;
+}
+
+.unblocked {
+  opacity: 0.3;
+}

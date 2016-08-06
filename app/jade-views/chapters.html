@@ -1,0 +1,41 @@
+
+<md-content layout-xs="column" layout-gt-xs="row">
+  <div class="md-inline-form">
+    <md-card id="card" layout-padding="layout-padding">
+      <md-sub-header class="md-no-sticky">create or edit a chapter</md-sub-header>
+      <div layout-gt-xs="column">
+        <md-input-container flex="flex" style="width:100%;">
+          <label>name</label>
+          <input ng-model="chapter.chapter"/>
+        </md-input-container>
+        <div layout="row" layout-align="center center">
+          <md-input-container>
+            <md-button ng-click="update()" class="md-raised md-primary">Update</md-button>
+          </md-input-container>
+          <md-input-container>
+            <md-button ng-click="add()" class="md-raised md-primary">Add</md-button>
+          </md-input-container>
+        </div>
+      </div>
+    </md-card>
+  </div>
+  <md-card layout-padding="layout-padding" flex="flex">
+    <md-list flex="flex">
+      <md-sub-header class="md-no-sticky">chapters</md-sub-header>
+      <md-list-item ng-repeat="chapter in chapters" class="md-2-line">
+        <md-divider></md-divider>
+        <div flex="3" class="md-list-item-text">
+          <md-button style="text-align: left;max-width:70%;min-width:50%;" ng-click="open(chapter)">{{chapter.chapter}}</md-button>
+        </div>
+        <div layout="row" flex="1" class="md-secondary">
+          <md-button ng-click="edit(chapter)" class="md-icon-button">
+            <md-icon md-svg-icon="../images/pencil.svg" aria-label="Edit" ng-click="edit(chapter.$id)"></md-icon>
+          </md-button>
+          <md-button class="md-icon-button">
+            <md-icon md-svg-icon="../images/bin.svg" aria-label="Edit" ng-click="chapters.$remove(chapter)"></md-icon>
+          </md-button>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-card>
+</md-content>

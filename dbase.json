@@ -1,0 +1,73 @@
+{
+	"chapters": [
+		{
+			"name": "01 Checkmate in one"
+		},
+		{
+			"name": "02 Checkmate in two"
+		},
+		{
+			"name": "03 Checkmate in three"
+		},
+		{
+			"name": "04 Pin"
+		},
+		{
+			"name": "05 Knigh Fork"
+		},
+		{
+			"name": "06 Double Attack"
+		},
+		{
+			"name": "07 Skewer Attack"
+		},
+		{
+			"name": "08 Back Rank"
+		},
+		{
+			"name": "09 Discovered Attack"
+		},
+		{
+			"name": "10 Discovered Check"
+		},
+		{
+			"name": "11 Destroying the Defender"
+		},
+		{
+			"name": "12 Decoy"
+		},
+		{
+			"name": "13 Deflection"
+		},
+		{
+			"name": "14 Overloaded Piece"
+		},
+		{
+			"name": "15 Line Opening & Closing"
+		},
+		{
+			"name": "16 Square Vacation"
+		},
+		{
+			"name": "17 Passed Pawn"
+		},
+		{
+			"name": "18 X Ray Attack"
+		},
+		{
+			"name": "19 Zwischenzug"
+		},
+		{
+			"name": "20 Draw by Repetition & Stalement"
+		},
+		{
+			"name": "21 Smothered Mate"
+		},
+		{
+			"name": "22 Windmills"
+		},
+		{
+			"name": "23 Endgame Test"
+		}
+	]
+}

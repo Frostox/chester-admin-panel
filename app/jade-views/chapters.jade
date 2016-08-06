@@ -1,0 +1,26 @@
+md-content(layout-xs='column', layout-gt-xs='row')
+  div.md-inline-form
+    md-card#card(layout-padding)
+      md-sub-header.md-no-sticky create or edit a chapter
+      div(layout-gt-xs='column')
+        md-input-container(flex, style='width:100%;')
+          label name
+          input(ng-model='chapter.chapter')
+        div(layout='row', layout-align='center center')
+          md-input-container
+            md-button.md-raised.md-primary(ng-click='update()') Update
+          md-input-container
+            md-button.md-raised.md-primary(ng-click='add()') Add
+
+  md-card(layout-padding, flex)
+    md-list(flex)
+      md-sub-header.md-no-sticky chapters
+      md-list-item.md-2-line(ng-repeat='chapter in chapters')
+        md-divider
+        div.md-list-item-text(flex = '3')
+          md-button(style='text-align: left;max-width:70%;min-width:50%;', ng-click='open(chapter)') {{chapter.chapter}}
+        div.md-secondary(layout='row', flex = '1')
+          md-button.md-icon-button(ng-click='edit(chapter)')
+            md-icon(md-svg-icon='../images/pencil.svg', aria-label='Edit', ng-click='edit(chapter.$id)')
+          md-button.md-icon-button
+            md-icon(md-svg-icon='../images/bin.svg', aria-label='Edit', ng-click='chapters.$remove(chapter)')

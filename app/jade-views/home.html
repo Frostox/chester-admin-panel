@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html ng-app="firebaseApp">
+  <head>
+    <title>PGNs | Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css">
+    <body>
+      <md-content layout="column">
+        <md-toolbar layout="row" ng-controller="HomeCtrl">
+          <div class="md-toolbar-tools top-navbar">
+            <h2><span>Chess App Admin Panel</span></h2><span flex=""></span>
+            <md-button aria-label="Log out" ng-click="logOut()" class="md-raised">Log out</md-button>
+          </div>
+        </md-toolbar>
+        <div ng-cloak="">
+          <md-content>
+            <md-tabs md-dynamic-height="" md-border-bottom="">
+              <md-tab label="Chapters">
+                <md-content ng-controller="ChaptersCtrl" class="md-padding">
+                  <md-content layout-xs="column" layout-gt-xs="row">
+                    <div class="md-inline-form">
+                      <md-card id="card" layout-padding>
+                        <md-sub-header class="md-no-sticky">create or edit a chapter</md-sub-header>
+                        <div layout-gt-xs="column">
+                          <md-input-container flex style="width:100%;">
+                            <label>name</label>
+                            <input ng-model="chapter.chapter">
+                          </md-input-container>
+                          <div layout="row" layout-align="center center">
+                            <md-input-container>
+                              <md-button ng-click="update()" class="md-raised md-primary">Update</md-button>
+                            </md-input-container>
+                            <md-input-container>
+                              <md-button ng-click="add()" class="md-raised md-primary">Add</md-button>
+                            </md-input-container>
+                          </div>
+                        </div>
+                      </md-card>
+                    </div>
+                    <md-card layout-padding flex>
+                      <md-list flex>
+                        <md-sub-header class="md-no-sticky">chapters</md-sub-header>
+                        <md-list-item ng-repeat="chapter in chapters" class="md-2-line">
+                          <md-divider></md-divider>
+                          <div flex="3" class="md-list-item-text">
+                            <md-button style="text-align: left;max-width:70%;min-width:50%;" ng-click="open(chapter)">{{chapter.chapter}}</md-button>
+                          </div>
+                          <div layout="row" flex="1" class="md-secondary">
+                            <md-button ng-click="edit(chapter)" class="md-icon-button">
+                              <md-icon md-svg-icon="../images/pencil.svg" aria-label="Edit" ng-click="edit(chapter.$id)"></md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button">
+                              <md-icon md-svg-icon="../images/bin.svg" aria-label="Edit" ng-click="chapters.$remove(chapter)"></md-icon>
+                            </md-button>
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </md-card>
+                  </md-content>
+                </md-content>
+              </md-tab>
+              <md-tab label="Users">
+                <md-content ng-controller="UsersCtrl" class="md-padding">
+                  <md-content layout-xs="column" layout-gt-xs="row">
+                    <div class="md-inline-form">
+                      <md-card id="card" layout-padding>
+                        <md-sub-header class="md-no-sticky">create or edit an user</md-sub-header>
+                        <div layout-gt-xs="column">
+                          <md-input-container flex style="width:100%;">
+                            <label>enter the email</label>
+                            <input ng-model="user.email">
+                          </md-input-container>
+                          <md-input-container flex style="width:100%;">
+                            <label>choose a password</label>
+                            <input ng-model="user.password">
+                          </md-input-container>
+                          <div layout="row" layout-align="center center">
+                            <md-input-container>
+                              <md-button ng-click="add()" class="md-raised md-primary">Add</md-button>
+                            </md-input-container>
+                            <md-input-container>
+                              <md-button ng-click="clear()" class="md-raised">Clear</md-button>
+                            </md-input-container>
+                          </div>
+                        </div>
+                      </md-card>
+                    </div>
+                    <md-card layout-padding flex>
+                      <md-list flex>
+                        <md-sub-header class="md-no-sticky">Users</md-sub-header>
+                        <md-list-item ng-repeat="user in users" class="md-2-line">
+                          <md-divider></md-divider>
+                          <div flex="3" class="md-list-item-text">
+                            <h4>{{user.email}}</h4>
+                          </div>
+                          <div layout="row" flex="1" class="md-secondary">
+                            <md-button ng-click="block(user.$id, !user.blocked)" class="md-icon-button">
+                              <md-icon md-svg-icon="../images/shapes.svg" aria-label="Edit" ng-class="user.blocked ? blocked : unblocked"></md-icon>
+                            </md-button>
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </md-card>
+                  </md-content>
+                </md-content>
+              </md-tab>
+              <md-tab label="Settings">
+                <md-content class="md-padding">
+                  <p>not implemented yet</p>
+                </md-content>
+              </md-tab>
+            </md-tabs>
+          </md-content>
+        </div>
+      </md-content>
+      <script src="../bower_components/jquery/dist/jquery.js"></script>
+      <script src="../bower_components/angular/angular.js"></script>
+      <script src="../bower_components/angular-aria/angular-aria.js"></script>
+      <script src="../bower_components/angular-animate/angular-animate.js"></script>
+      <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="../bower_components/angular-messages/angular-messages.js"></script>
+      <script src="../bower_components/angular-resource/angular-resource.js"></script>
+      <script src="../bower_components/angular-route/angular-route.js"></script>
+      <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="../bower_components/angular-touch/angular-touch.js"></script>
+      <script src="../bower_components/firebase/firebase.js"></script>
+      <script src="../bower_components/angularfire/dist/angularfire.js"></script>
+      <script src="../bower_components/angular-material/angular-material.js"></script>
+      <script src="../scripts/app.js"></script>
+      <script src="../scripts/controllers/home.js"></script>
+      <script src="../scripts/controllers/chapters.js"></script>
+      <script src="../scripts/controllers/users.js"></script>
+    </body>
+  </head>
+</html>

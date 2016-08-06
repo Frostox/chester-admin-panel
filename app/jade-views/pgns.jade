@@ -1,0 +1,81 @@
+doctype html
+html(ng-app='firebaseApp')
+  head
+    title PGNs | Admin Panel
+    meta(name='viewport', content="width=device-width, initial-scale=1.0")
+    link(rel='stylesheet', href='../styles/style.css')
+    link(rel='stylesheet', href='../styles/chessboard-0.3.0.min.css')
+    link(rel='stylesheet', href='../bower_components/angular-material/angular-material.css')
+
+    body(ng-controller='PgnsCtrl')
+
+      md-content(layout='column')
+        md-toolbar(layout='row')
+          .md-toolbar-tools.top-navbar
+                h2
+                  span Chess App Admin Panel
+                span(flex='')
+                md-button.md-raised(aria-label='Log out', ng-click='logOut()') Log out
+        md-content(layout-xs='column', layout-gt-xs='row')
+          div.md-inline-form(flex-gt-xs='40')
+            md-card#card(layout-padding)
+              md-sub-header.md-no-sticky create or replace pgn
+              h5 {{getFen(pgn)}}
+              div(layout-gt-xs='column')
+                md-input-container
+                  input#file-input(type='file', on-read-file="showContent($fileContent)", aria-label='Upload file')
+                md-input-container.md-block
+                  label Input pgns
+                  textarea(ng-model="pgntext", rows="5" md-select-on-focus)
+              div(layout='row', layout-align='center center')
+                md-input-container
+                  md-button.md-raised.md-primary(ng-click='replace()') Replace
+                md-input-container
+                  md-button.md-raised.md-primary(ng-click='add()') Add
+                md-input-container
+                  md-button.md-raised(ng-click='clear()') Clear
+
+
+          md-card(layout-padding, flex-gt-xs='60')
+            md-list(flex)
+              md-sub-header.md-no-sticky pgns in {{chapter.chapter}}
+              md-list-item.md-2-line(ng-repeat='pgn in pgns',layout='column', style='margin-top: 10px;')
+                md-divider
+                div.md-list-item-text(flex = '1', style='width:100%;')
+                  h4(style='text-align: left') {{getFen(pgn)}}
+                  div(ng-attr-id="{{pgn.$id}}", style='width:150px;')
+
+                div.md-secondary(layout='row', flex = '1')
+                  br
+                  md-button.md-icon-button(ng-click='edit(pgn)')
+                    md-icon(md-svg-icon='../images/pencil.svg', aria-label='Edit')
+                  md-button.md-icon-button
+                    md-icon(md-svg-icon='../images/bin.svg', aria-label='Remove', ng-click='pgns.$remove(pgn)')
+
+
+
+
+
+
+
+
+        script(src='../bower_components/jquery/dist/jquery.js')
+        script(src='../bower_components/angular/angular.js')
+        script(src='../bower_components/angular-aria/angular-aria.js')
+        script(src='../bower_components/angular-animate/angular-animate.js')
+        script(src='../bower_components/angular-cookies/angular-cookies.js')
+        script(src='../bower_components/angular-messages/angular-messages.js')
+        script(src='../bower_components/angular-resource/angular-resource.js')
+        script(src='../bower_components/angular-route/angular-route.js')
+        script(src='../bower_components/angular-sanitize/angular-sanitize.js')
+        script(src='../bower_components/angular-touch/angular-touch.js')
+        script(src='../bower_components/firebase/firebase.js')
+        script(src='../bower_components/angularfire/dist/angularfire.js')
+        script(src='../bower_components/angular-material/angular-material.js')
+
+
+
+        script(src='../scripts/app.js')
+        script(src='../scripts/controllers/pgns.js')
+        script(src='../scripts/chess.js')
+        script(src='../scripts/chessboard-0.3.0.min.js')
