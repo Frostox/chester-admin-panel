@@ -20,16 +20,15 @@ angular.module('firebaseApp')
     $scope.showContent = function($fileContent){
 
 
-        var pgns = $fileContent.split("[Event");
+        var pgns = $fileContent.split("~");
 
         console.log(pgns.length);
-        console.log(pgns[0]);
 
         var i;
 
         var chaptersText = [];
 
-        return;
+        //return;
 
         console.log(pgns.length);
         for(i=0; i<pgns.length; i++){
@@ -53,11 +52,15 @@ angular.module('firebaseApp')
 
         }
 
-        for(i=0; i<chapters.length; i++){
+        console.log(chaptersText.length);
+        console.log(chaptersText);
+
+        for(i=0; i<chaptersText.length; i++){
           var chapter = chapters[i];
           var key = refChapters.push({
             "chapter": chapter.name
           }).key();
+
 
           var chapterPgns = chaptersText[i];
           for(var k=0; k<chapterPgns.length; k++){
